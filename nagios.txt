@@ -1,0 +1,91 @@
+nagios
+======
+this is a server and network monitoring tool
+
+installing nagios:
+===================
+
+1. create 2 aws instances name one as nagios-server and other as servver1
+
+2. open the console of the nagios_serer
+
+3. sudo apt-get update
+
+4. sudo apt-get upgrade
+
+update                                                                      
+========                                                                  
+this is used to update the apt repository there might be some applications added or removed in the repository
+
+upgrade
+=========
+applications in the apt repository are updated to latest version
+
+5. sudo apt-get install nagios3
+
+  you have to set the nagios adminsistration password
+
+6. to see the homepage of nagios open any broswer give the publicIp of instance/nagios3
+
+   enter the nagios username and pasword
+   the default username is nagiosadmin
+
+7. sudo vi /etc/nagios3/nagios.cfg
+   set the check_external_commands=1
+
+8.  sudo vi /etc/group
+    here all the user and group information files are present search here for nagios
+    here add www.data at the end
+
+9. sudo chmod g+w /var/lib/nagios3/rw    write permissions for the group
+
+10. sudo chmod g+w /var/lib/nagios3
+
+11. restart apache2
+    sudo service apache2 restart
+
+12. restart nagios3
+   sudo service nagios3 restart
+
+configuring remote servers on nagios to monitor
+==============================================
+
+go to nagios-server machine
+
+cd /etc/nagios3
+
+here you find conf.d folder....go to that folder
+
+any remote server you want to configure you have to kept here...if there are multiple servers you have to write multiple .cfg files
+
+sudo vi server1.cfg
+=====================	
+define host {
+        use                             linux-server
+        host_name                      ec2-13-234-19-116.ap-south-1.compute.amazonaws.com
+        alias                           My first Apache server
+        address                         172.31.36.154
+        max_check_attempts              5
+        check_period                    24x7
+        notification_interval           30
+        notification_period             24x7
+}
+
+
+3. to check if the above file is added or not
+
+   sudo nagios3 -v /etc/nagios3/nagios.cfg | less
+
+4. restart nagios3
+
+   sudo /etc/init.d/nagios3 restart
+
+   sudo service nagios3 restart
+
+
+
+
+
+   
+
+
